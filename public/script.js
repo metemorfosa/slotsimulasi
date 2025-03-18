@@ -17,9 +17,13 @@ function joinGame() {
 function spin() {
     document.getElementById('spinSound').play();
     fetch('/get-winner')
-.then(response => {
-    if (!response.ok) throw new Error('Failed to get winner');
-    return response.json();
+   .then(response => response.text())  // Cek dulu teksnya
+   .then(text => {
+       console.log('Raw Response:', text);
+       return JSON.parse(text);  // Ubah ke JSON kalau valid
+   })
+   .then(data => console.log('Parsed JSON:', data))
+   .catch(error => console.error('Error:', error));
 })
 .then(data => {
     console.log('Winner data:', data);
